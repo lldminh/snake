@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d70238aad1bc27248999e66d33914080
+timeCreated: 1441765258
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - tailPrefab: {instanceID: 0}
+  - edge_tailPrefab: {fileID: 102702, guid: f5ecfee58b888f64db9e22555ce2d0a9, type: 2}
+  - edge_bodyPrefab: {fileID: 148042, guid: 79630fb1e5f3aa84b935844eae0b2371, type: 2}
+  - boardScript: {instanceID: 0}
+  - obj_gamger: {instanceID: 0}
+  - clGamger: {instanceID: 0}
+  - edge_tail: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
