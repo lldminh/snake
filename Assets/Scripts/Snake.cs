@@ -11,7 +11,7 @@ public class Snake : MonoBehaviour {
 	public BoardManage boardScript;
 	public GameObject obj_gamger;
 	public GameManager clGamger;
-
+	public bool turned;
 
 	public GameObject edge_tail;
 	
@@ -39,72 +39,76 @@ public class Snake : MonoBehaviour {
 		clGamger = obj_gamger.GetComponent<GameManager> ();
 		InvokeRepeating("Movement", 0.3f, speed);
 		edge_tail =(GameObject)Instantiate(edge_tailPrefab, start_pos, Quaternion.identity);
-
+		turned = true;
 
 	}
 	
 	void Update () {
-		if (Input.GetKey (KeyCode.RightArrow) && horizontal) {
-
-			if((int)transform.eulerAngles.z==(int)180){
-				turn_to_cornner=cornner[3];
-				rotation_edge_lst.Insert(0,Vector3.down/3);
-			}else if((int)transform.eulerAngles.z==(int)0){
-				turn_to_cornner=cornner[0];//cornner.topleft;
-				rotation_edge_lst.Insert(0,Vector3.up/3);
+		if (turned) {
+			if (Input.GetKey (KeyCode.RightArrow) && horizontal) {
+				
+				if((int)transform.eulerAngles.z==(int)180){
+					turn_to_cornner=cornner[3];
+					rotation_edge_lst.Insert(0,Vector3.down/3);
+				}else if((int)transform.eulerAngles.z==(int)0){
+					turn_to_cornner=cornner[0];//cornner.topleft;
+					rotation_edge_lst.Insert(0,Vector3.up/3);
+				}
+				transform.rotation= Quaternion.Euler(0,0,-90);
+				horizontal = false;
+				vertical = true;
+				vector = Vector2.up;
+			} else if (Input.GetKey (KeyCode.UpArrow) && vertical) {
+				
+				if((int)transform.eulerAngles.z==(int)90){
+					turn_to_cornner=cornner[3];//(int)cornner.botleft;
+					rotation_edge_lst.Insert(0,Vector3.left/3);
+				}else if((int)transform.eulerAngles.z==(int)270){
+					turn_to_cornner=cornner[2];//(int)cornner.botright;
+					rotation_edge_lst.Insert(0,Vector3.right/3);
+				}
+				transform.rotation= Quaternion.Euler(0,0,0);
+				horizontal = true;
+				vertical = false;
+				vector = Vector2.up;
+				
+			} else if (Input.GetKey (KeyCode.DownArrow) && vertical) {
+				
+				if((int)transform.eulerAngles.z==(int)90){
+					turn_to_cornner=cornner[0];
+					rotation_edge_lst.Insert(0,Vector3.left/3);
+				}else if((int)transform.eulerAngles.z==(int)270){
+					turn_to_cornner=cornner[1];//(int)cornner.topright;
+					rotation_edge_lst.Insert(0,Vector3.right/3);
+				}
+				transform.rotation= Quaternion.Euler(0,0,180);
+				horizontal = true;
+				vertical = false;
+				vector = Vector2.up;
+				
+			} else if (Input.GetKey (KeyCode.LeftArrow) && horizontal) {
+				
+				if((int)transform.eulerAngles.z==(int)180){
+					turn_to_cornner=cornner[2];//(int)cornner.botright;
+					rotation_edge_lst.Insert(0,Vector3.down/3);
+				}else if((int)transform.eulerAngles.z==(int)0){
+					turn_to_cornner=cornner[1];//(int)cornner.topright;
+					rotation_edge_lst.Insert(0,Vector3.up/3);
+				}
+				transform.rotation= Quaternion.Euler(0,0,90);
+				horizontal = false;
+				vertical = true;
+				vector = Vector2.up;
+				
 			}
-			transform.rotation= Quaternion.Euler(0,0,-90);
-			horizontal = false;
-			vertical = true;
-			vector = Vector2.up;
-		} else if (Input.GetKey (KeyCode.UpArrow) && vertical) {
-			
-			if((int)transform.eulerAngles.z==(int)90){
-				turn_to_cornner=cornner[3];//(int)cornner.botleft;
-				rotation_edge_lst.Insert(0,Vector3.left/3);
-			}else if((int)transform.eulerAngles.z==(int)270){
-				turn_to_cornner=cornner[2];//(int)cornner.botright;
-				rotation_edge_lst.Insert(0,Vector3.right/3);
+			if (tail.Count == 0) {
+				turn_to_cornner=0;
+				rotation_edge_lst.Clear();
 			}
-			transform.rotation= Quaternion.Euler(0,0,0);
-			horizontal = true;
-			vertical = false;
-			vector = Vector2.up;
-
-		} else if (Input.GetKey (KeyCode.DownArrow) && vertical) {
-			
-			if((int)transform.eulerAngles.z==(int)90){
-				turn_to_cornner=cornner[0];
-				rotation_edge_lst.Insert(0,Vector3.left/3);
-			}else if((int)transform.eulerAngles.z==(int)270){
-				turn_to_cornner=cornner[1];//(int)cornner.topright;
-				rotation_edge_lst.Insert(0,Vector3.right/3);
-			}
-			transform.rotation= Quaternion.Euler(0,0,180);
-			horizontal = true;
-			vertical = false;
-			vector = Vector2.up;
-
-		} else if (Input.GetKey (KeyCode.LeftArrow) && horizontal) {
-			
-			if((int)transform.eulerAngles.z==(int)180){
-				turn_to_cornner=cornner[2];//(int)cornner.botright;
-				rotation_edge_lst.Insert(0,Vector3.down/3);
-			}else if((int)transform.eulerAngles.z==(int)0){
-				turn_to_cornner=cornner[1];//(int)cornner.topright;
-				rotation_edge_lst.Insert(0,Vector3.up/3);
-			}
-			transform.rotation= Quaternion.Euler(0,0,90);
-			horizontal = false;
-			vertical = true;
-			vector = Vector2.up;
-
+			moveVector = vector / 3f;
+			turned=false;
 		}
-		if (tail.Count == 0) {
-			turn_to_cornner=0;
-			rotation_edge_lst.Clear();
-		}
-		moveVector = vector / 3f;
+
 		
 	}
 	
@@ -201,6 +205,8 @@ public class Snake : MonoBehaviour {
 			edge_tail.transform.rotation=transform.rotation;
 		}
 		transform.Translate(moveVector);
+		turned = true;
+
 	}
 
 	
