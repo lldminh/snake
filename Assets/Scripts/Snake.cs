@@ -119,7 +119,7 @@ public class Snake : MonoBehaviour {
 		
 		Vector2 ta = transform.position;
 		if (eat) {
-			AudioSource.PlayClipAtPoint(eat_sound,transform.position);
+
 			if (speed > 0.002){
 				speed = speed - 0.002f;
 			}
@@ -216,6 +216,7 @@ public class Snake : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D c) {
 		
 		if (c.name.StartsWith("food")) {
+			AudioSource.PlayClipAtPoint(eat_sound,transform.position);
 			eat = true;
 
 			Destroy(c.gameObject);
