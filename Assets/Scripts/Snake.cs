@@ -14,7 +14,8 @@ public class Snake : MonoBehaviour {
 	public bool turned;
 
 	public GameObject edge_tail;
-	
+
+	public AudioClip eat_sound;
 	private float speed = 0.1f;
 	private int[] cornner = {1,2,3,4};
 //		topleft,
@@ -27,7 +28,7 @@ public class Snake : MonoBehaviour {
 	
 	List<Transform> tail = new List<Transform>();
 
-	List<Vector3> rotation_edge_lst = new List<Vector3>();
+
 	
 	bool eat = false;
 	bool vertical = false;
@@ -49,10 +50,10 @@ public class Snake : MonoBehaviour {
 				
 				if((int)transform.eulerAngles.z==(int)180){
 					turn_to_cornner=cornner[3];
-					rotation_edge_lst.Insert(0,Vector3.down/3);
+
 				}else if((int)transform.eulerAngles.z==(int)0){
 					turn_to_cornner=cornner[0];//cornner.topleft;
-					rotation_edge_lst.Insert(0,Vector3.up/3);
+
 				}
 				transform.rotation= Quaternion.Euler(0,0,-90);
 				horizontal = false;
@@ -62,10 +63,10 @@ public class Snake : MonoBehaviour {
 				
 				if((int)transform.eulerAngles.z==(int)90){
 					turn_to_cornner=cornner[3];//(int)cornner.botleft;
-					rotation_edge_lst.Insert(0,Vector3.left/3);
+
 				}else if((int)transform.eulerAngles.z==(int)270){
 					turn_to_cornner=cornner[2];//(int)cornner.botright;
-					rotation_edge_lst.Insert(0,Vector3.right/3);
+
 				}
 				transform.rotation= Quaternion.Euler(0,0,0);
 				horizontal = true;
@@ -76,10 +77,10 @@ public class Snake : MonoBehaviour {
 				
 				if((int)transform.eulerAngles.z==(int)90){
 					turn_to_cornner=cornner[0];
-					rotation_edge_lst.Insert(0,Vector3.left/3);
+
 				}else if((int)transform.eulerAngles.z==(int)270){
 					turn_to_cornner=cornner[1];//(int)cornner.topright;
-					rotation_edge_lst.Insert(0,Vector3.right/3);
+
 				}
 				transform.rotation= Quaternion.Euler(0,0,180);
 				horizontal = true;
@@ -90,10 +91,10 @@ public class Snake : MonoBehaviour {
 				
 				if((int)transform.eulerAngles.z==(int)180){
 					turn_to_cornner=cornner[2];//(int)cornner.botright;
-					rotation_edge_lst.Insert(0,Vector3.down/3);
+
 				}else if((int)transform.eulerAngles.z==(int)0){
 					turn_to_cornner=cornner[1];//(int)cornner.topright;
-					rotation_edge_lst.Insert(0,Vector3.up/3);
+
 				}
 				transform.rotation= Quaternion.Euler(0,0,90);
 				horizontal = false;
@@ -103,7 +104,7 @@ public class Snake : MonoBehaviour {
 			}
 			if (tail.Count == 0) {
 				turn_to_cornner=0;
-				rotation_edge_lst.Clear();
+
 			}
 			moveVector = vector / 3f;
 			turned=false;
@@ -118,15 +119,15 @@ public class Snake : MonoBehaviour {
 		
 		Vector2 ta = transform.position;
 		if (eat) {
+			AudioSource.PlayClipAtPoint(eat_sound,transform.position);
 			if (speed > 0.002){
 				speed = speed - 0.002f;
 			}
 			GameObject g;
 			if(tail.Count > 0){
-				if(transform.eulerAngles.z!=tail.First().eulerAngles.z){
-					Debug.Log("Thang dau tien:"+tail.First().eulerAngles.z);
-					Debug.Log(turn_to_cornner);
-					Debug.Log("Cai dau ran:"+ transform.eulerAngles.z);
+				if(transform.eulerAngles.z!=tail.First().eulerAngles.z && tail.First().gameObject.tag!="edge_body"){
+					Debug.Log("Thang dau tien:"+tail.First().gameObject.tag);
+
 					g =(GameObject)Instantiate(edge_bodyPrefab, ta, Quaternion.identity);
 					switch(turn_to_cornner){
 					case 1:g.transform.rotation = Quaternion.Euler(0,0,0); //topleft
@@ -153,6 +154,8 @@ public class Snake : MonoBehaviour {
 			tail.Insert(0, g.transform);
 			Debug.Log(speed);
 			eat = false;
+
+
 		}
 		else if (tail.Count > 0) {
 
