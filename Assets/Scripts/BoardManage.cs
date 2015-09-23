@@ -28,8 +28,13 @@ public class BoardManage : MonoBehaviour {
 		for (int x = -1; x < columns+1; x++) {
 			for (int y = -1; y < rows+1; y++) {
 				GameObject toInstance=floorTile;
-				if(x==-1 || x==columns||y==-1 || y==rows )
+				if(x==-1 || x==columns||y==-1 || y==rows ){
 					toInstance=outerWallTile;
+					if(y==-1 && x!=-1 || x==columns && y!=rows){
+						GameObject botFloor_instance=Instantiate(floorTile,new Vector3(x,y,0f),Quaternion.identity) as GameObject;
+						botFloor_instance.transform.SetParent(boardHolder);
+					}
+				}
 				GameObject instance=Instantiate(toInstance,new Vector3(x,y,0f),Quaternion.identity) as GameObject;
 				instance.transform.SetParent(boardHolder);
 			}
