@@ -126,7 +126,7 @@ public class Snake : MonoBehaviour {
 			GameObject g;
 			if(tail.Count > 0){
 				if(transform.eulerAngles.z!=tail.First().eulerAngles.z && tail.First().gameObject.tag!="edge_body"){
-					Debug.Log("Thang dau tien:"+tail.First().gameObject.tag);
+
 
 					g =(GameObject)Instantiate(edge_bodyPrefab, ta, Quaternion.identity);
 					switch(turn_to_cornner){
@@ -152,7 +152,7 @@ public class Snake : MonoBehaviour {
 
 
 			tail.Insert(0, g.transform);
-			Debug.Log(speed);
+
 			eat = false;
 
 
@@ -211,6 +211,26 @@ public class Snake : MonoBehaviour {
 		turned = true;
 
 	}
+
+	public bool PosFoodAccepted(Vector2 posFood_created){
+		try{
+			foreach (var item in tail) {
+				string x_temp_item=item.position.x.ToString("F1");
+				string x_temp_food=posFood_created.x.ToString("F1");
+				string y_temp_item=item.position.y.ToString("F1");
+				string y_temp_food=posFood_created.y.ToString("F1");
+				if(x_temp_item==x_temp_food && y_temp_item  ==y_temp_food){
+					return true;
+				}
+				
+			}
+			return false;
+		}catch(UnityException e){
+			Debug.Log("Loi me roi");
+			return false;
+		}
+
+	} 
 
 	
 	void OnTriggerEnter2D(Collider2D c) {

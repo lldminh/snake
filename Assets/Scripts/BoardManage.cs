@@ -9,15 +9,16 @@ public class BoardManage : MonoBehaviour {
 	public int rows=8;
 	public GameObject floorTile;
 	public GameObject outerWallTile;
-	public GameObject food;
+
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions=new List<Vector3>();
+	private float[] num_array=new float[]{0,1/3f,2/3f,1};
 
 	void InititaliseList(){
 		gridPositions.Clear ();
-		for (int x = 0; x < columns-1; x++) {
-			for (int y = 0; y < rows-1; y++) {
+		for (float x = 0; x < columns-1; x+=1/3f) {
+			for (float y = 0; y < rows-1; y+=1/3f) {
 				gridPositions.Add(new Vector3(x,y,0f));
 			}
 		}
@@ -40,15 +41,16 @@ public class BoardManage : MonoBehaviour {
 			}
 		}
 	}
-	public void SpawnFood() {
-		int x = (int)Random.Range (0,columns);
-		int y = (int)Random.Range (0,rows);
-		
-		Instantiate (food,new Vector3(x,y,0f), Quaternion.identity);
+	public Vector2 SpawnFood() {
+		int temp_index = Random.Range (0, (num_array.Length - 1)); //index random of num_array
+		float x = (float)Random.Range (0,columns-2)+num_array[temp_index];
+		float y = (float)Random.Range (0,rows-2)+num_array[temp_index];
+		Vector2 temp_pos = new Vector2 (x, y);
+		return temp_pos;
 	}
 	public void SetupScene(){
 		boardSetup ();
 		InititaliseList ();
-		SpawnFood();
+		//SpawnFood();
 	}
 }
