@@ -42,7 +42,7 @@ public class BoardManage : MonoBehaviour {
 		}
 	}
 	public Vector2 SpawnFood() {
-		int temp_index = Random.Range (0, (num_array.Length - 1)); //index random of num_array
+		int temp_index = Random.Range (0, num_array.Length); //index random of num_array
 		float x = (float)Random.Range (0,columns-2)+num_array[temp_index];
 		float y = (float)Random.Range (0,rows-2)+num_array[temp_index];
 		Vector2 temp_pos = new Vector2 (x, y);
