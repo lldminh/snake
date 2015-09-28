@@ -9,7 +9,8 @@ public class BoardManage : MonoBehaviour {
 	public int rows=8;
 	public GameObject floorTile;
 	public GameObject outerWallTile;
-
+	public GameObject gateExit;
+	public GameObject btnOpen;
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions=new List<Vector3>();
@@ -51,6 +52,8 @@ public class BoardManage : MonoBehaviour {
 	public void SetupScene(){
 		boardSetup ();
 		InititaliseList ();
+		Instantiate (gateExit, new Vector3 (columns - 4/3f, rows - 4/3f, 0f), Quaternion.identity);
+		Instantiate (btnOpen, new Vector3 (columns - 3f, rows - 4/3f, 0f), Quaternion.identity);
 		//SpawnFood();
 	}
 }

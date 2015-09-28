@@ -213,7 +213,7 @@ public class Snake : MonoBehaviour {
 	}
 
 	public bool PosFoodAccepted(Vector2 posFood_created){
-		try{
+
 			foreach (var item in tail) {
 				string x_temp_item=item.position.x.ToString("F1");
 				string x_temp_food=posFood_created.x.ToString("F1");
@@ -225,10 +225,7 @@ public class Snake : MonoBehaviour {
 				
 			}
 			return false;
-		}catch(UnityException e){
-			Debug.Log("Loi me roi");
-			return false;
-		}
+
 
 	} 
 
