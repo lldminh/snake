@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	void Awake(){
 		boardScript = GetComponent<BoardManage> ();
 		componentSnake=GameObject.FindGameObjectWithTag("Snake").GetComponent<Snake> ();
+
 		InitGame ();
 	}
 

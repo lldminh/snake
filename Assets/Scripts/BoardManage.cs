@@ -7,10 +7,13 @@ public class BoardManage : MonoBehaviour {
 
 	public int columns=8;
 	public int rows=8;
+	public float xDoor=6.61f;
+	public float yDoor=6.47f;
 	public GameObject floorTile;
 	public GameObject outerWallTile;
 	public GameObject gateExit;
 	public GameObject btnOpen;
+	public GameObject doorLock;
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions=new List<Vector3>();
@@ -53,6 +56,7 @@ public class BoardManage : MonoBehaviour {
 		boardSetup ();
 		InititaliseList ();
 		Instantiate (gateExit, new Vector3 (columns - 4/3f, rows - 4/3f, 0f), Quaternion.identity);
+		Instantiate (doorLock, new Vector3 (xDoor, yDoor, 0f), Quaternion.identity);
 		Instantiate (btnOpen, new Vector3 (columns - 3f, rows - 4/3f, 0f), Quaternion.identity);
 		//SpawnFood();
 	}

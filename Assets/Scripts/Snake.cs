@@ -9,6 +9,7 @@ public class Snake : MonoBehaviour {
 	public GameObject edge_tailPrefab;
 	public GameObject edge_bodyPrefab;
 	public BoardManage boardScript;
+	public GameObject doorLock;
 	public GameObject obj_gamger;
 	public GameManager clGamger;
 	public bool turned;
@@ -38,6 +39,7 @@ public class Snake : MonoBehaviour {
 		Vector2 start_pos = transform.position;
 		obj_gamger = GameObject.FindGameObjectWithTag("GameManager");
 		clGamger = obj_gamger.GetComponent<GameManager> ();
+		doorLock = GameObject.FindGameObjectWithTag("DoorLock");
 		InvokeRepeating("Movement", 0.3f, speed);
 		edge_tail =(GameObject)Instantiate(edge_tailPrefab, start_pos, Quaternion.identity);
 		turned = true;
@@ -239,7 +241,8 @@ public class Snake : MonoBehaviour {
 			Destroy(c.gameObject);
 			clGamger.newFood=true;
 		}
-		else {
+		else if(c.name.StartsWith("btnOpenGate")) {
+			doorLock.GetComponent<Animator>().SetBool("isOpen",true);
 			//Application.LoadLevel(1);
 		}
 	}
