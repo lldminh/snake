@@ -9,7 +9,7 @@ public class Snake : MonoBehaviour {
 	public GameObject edge_tailPrefab;
 	public GameObject edge_bodyPrefab;
 	public BoardManage boardScript;
-	public GameObject doorLock;
+
 	public GameObject obj_gamger;
 	public GameManager clGamger;
 	public bool turned;
@@ -39,7 +39,7 @@ public class Snake : MonoBehaviour {
 		Vector2 start_pos = transform.position;
 		obj_gamger = GameObject.FindGameObjectWithTag("GameManager");
 		clGamger = obj_gamger.GetComponent<GameManager> ();
-		doorLock = GameObject.FindGameObjectWithTag("DoorLock");
+		boardScript=GameObject.FindGameObjectWithTag("GameManager").GetComponent<BoardManage> ();
 		InvokeRepeating("Movement", 0.3f, speed);
 		edge_tail =(GameObject)Instantiate(edge_tailPrefab, start_pos, Quaternion.identity);
 		turned = true;
@@ -61,6 +61,7 @@ public class Snake : MonoBehaviour {
 				horizontal = false;
 				vertical = true;
 				vector = Vector2.up;
+				turned=false;
 			} else if (Input.GetKey (KeyCode.UpArrow) && vertical) {
 				
 				if((int)transform.eulerAngles.z==(int)90){
@@ -74,7 +75,7 @@ public class Snake : MonoBehaviour {
 				horizontal = true;
 				vertical = false;
 				vector = Vector2.up;
-				
+				turned=false;
 			} else if (Input.GetKey (KeyCode.DownArrow) && vertical) {
 				
 				if((int)transform.eulerAngles.z==(int)90){
@@ -88,7 +89,7 @@ public class Snake : MonoBehaviour {
 				horizontal = true;
 				vertical = false;
 				vector = Vector2.up;
-				
+				turned=false;
 			} else if (Input.GetKey (KeyCode.LeftArrow) && horizontal) {
 				
 				if((int)transform.eulerAngles.z==(int)180){
@@ -102,14 +103,14 @@ public class Snake : MonoBehaviour {
 				horizontal = false;
 				vertical = true;
 				vector = Vector2.up;
-				
+				turned=false;
 			}
 			if (tail.Count == 0) {
 				turn_to_cornner=0;
 
 			}
 			moveVector = vector / 3f;
-			turned=false;
+
 		}
 
 		
@@ -215,18 +216,56 @@ public class Snake : MonoBehaviour {
 	}
 
 	public bool PosFoodAccepted(Vector2 posFood_created){
+		string x_temp_food=posFood_created.x.ToString("F1");
+		string y_temp_food=posFood_created.y.ToString("F1");
 
-			foreach (var item in tail) {
+		foreach (var item_vector in boardScript.gridPosNotFood) {
+			string x_temp_item_vector= item_vector.x.ToString("F1");
+			string y_temp_item_vector= item_vector.y.ToString("F1");
+
+			string x_temp_right= (item_vector.x+1/3f).ToString("F1");
+			string y_temp_right= item_vector.y.ToString("F1");
+			string x_temp_right_up= (item_vector.x+1/3f).ToString("F1");
+			string y_temp_right_up= (item_vector.y+1/3f).ToString("F1");
+
+			string x_temp_up= item_vector.x.ToString("F1");
+			string y_temp_up= (item_vector.y+1/3f).ToString("F1");
+			string x_temp_up_left= (item_vector.x-1/3f).ToString("F1");
+			string y_temp_up_left= (item_vector.y+1/3f).ToString("F1");
+
+			string x_temp_left= (item_vector.x-1/3f).ToString("F1");
+			string y_temp_left= item_vector.y.ToString("F1");
+			string x_temp_left_down= (item_vector.x-1/3f).ToString("F1");
+			string y_temp_left_down= (item_vector.y-1/3f).ToString("F1");
+
+			string x_temp_down= item_vector.x.ToString("F1");
+			string y_temp_down= (item_vector.y-1/3f).ToString("F1");
+			string x_temp_down_right= (item_vector.x+1/3f).ToString("F1");
+			string y_temp_down_right= (item_vector.y-1/3f).ToString("F1");
+
+			if((x_temp_item_vector==x_temp_food && y_temp_item_vector  ==y_temp_food) 
+			   || (x_temp_right==x_temp_food && y_temp_right  ==y_temp_food)
+			   || (x_temp_up==x_temp_food && y_temp_up  ==y_temp_food)
+			   || (x_temp_left==x_temp_food && y_temp_left  ==y_temp_food)
+			   || (x_temp_down==x_temp_food && y_temp_down  ==y_temp_food)
+			   || (x_temp_right_up==x_temp_food && y_temp_right_up  ==y_temp_food)
+			   || (x_temp_up_left==x_temp_food && y_temp_up_left  ==y_temp_food)
+			   || (x_temp_left_down==x_temp_food && y_temp_left_down  ==y_temp_food)
+			   || (x_temp_down_right==x_temp_food && y_temp_down_right  ==y_temp_food)){
+				return true;
+			}
+		}
+		foreach (var item in tail) {
 				string x_temp_item=item.position.x.ToString("F1");
-				string x_temp_food=posFood_created.x.ToString("F1");
+				
 				string y_temp_item=item.position.y.ToString("F1");
-				string y_temp_food=posFood_created.y.ToString("F1");
+				
 				if(x_temp_item==x_temp_food && y_temp_item  ==y_temp_food){
 					return true;
 				}
 				
-			}
-			return false;
+		}
+		return false;
 
 
 	} 
@@ -242,8 +281,9 @@ public class Snake : MonoBehaviour {
 			clGamger.newFood=true;
 		}
 		else if(c.name.StartsWith("btnOpenGate")) {
-			doorLock.GetComponent<Animator>().SetBool("isOpen",true);
+			clGamger.openDoor=1;
 			//Application.LoadLevel(1);
 		}
 	}
+
 }

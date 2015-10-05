@@ -14,9 +14,11 @@ public class BoardManage : MonoBehaviour {
 	public GameObject gateExit;
 	public GameObject btnOpen;
 	public GameObject doorLock;
+	public GameObject[] impediment;
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions=new List<Vector3>();
+	public List<Vector3> gridPosNotFood=new List<Vector3>();
 	private float[] num_array=new float[]{0,1/3f,2/3f,1};
 
 	void InititaliseList(){
@@ -55,9 +57,42 @@ public class BoardManage : MonoBehaviour {
 	public void SetupScene(){
 		boardSetup ();
 		InititaliseList ();
-		Instantiate (gateExit, new Vector3 (columns - 4/3f, rows - 4/3f, 0f), Quaternion.identity);
-		Instantiate (doorLock, new Vector3 (xDoor, yDoor, 0f), Quaternion.identity);
-		Instantiate (btnOpen, new Vector3 (columns - 3f, rows - 4/3f, 0f), Quaternion.identity);
+		SetBoardForLevel (Application.loadedLevel);
+
 		//SpawnFood();
+	}
+
+	public void SetBoardForLevel(int _level){
+		switch (_level) {
+		case 1:
+			level_1();
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void level_1(){
+		Vector3 pos_gateExit = new Vector3 (columns - 4 / 3f, rows - 4 / 3f, 0f); 
+		Vector3 pos_doorLock = new Vector3 (xDoor, yDoor, 0f);
+		Vector3 pos_btnOpen = new Vector3 (6+2/3f, 5f, 0f);
+
+		Vector3 pos_impediment_01 = new Vector3 (4f, 4f, 0f);
+		Vector3 pos_impediment_02 = new Vector3 (1f, 1f, 0f);
+		Vector3 pos_impediment_03 = new Vector3 (6f, 2f, 0f);
+
+		Instantiate (gateExit, pos_gateExit, Quaternion.identity);
+		Instantiate (doorLock, pos_doorLock, Quaternion.identity);
+		Instantiate (btnOpen, pos_btnOpen, Quaternion.identity);
+		Instantiate (impediment[0], pos_impediment_01, Quaternion.identity);
+		Instantiate (impediment[1], pos_impediment_02, Quaternion.identity);
+		Instantiate (impediment[2], pos_impediment_03, Quaternion.identity);
+
+		gridPosNotFood.Add (pos_gateExit);
+		gridPosNotFood.Add (pos_doorLock);
+		//gridPosNotFood.Add (pos_btnOpen);
+		gridPosNotFood.Add (pos_impediment_01);
+		gridPosNotFood.Add (pos_impediment_02);
+		gridPosNotFood.Add (pos_impediment_03);
 	}
 }
